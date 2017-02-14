@@ -3,11 +3,11 @@ title: "Measuring and Analysis of Ping-Pong Time"
 author: "Jean-Marc Vincent, Lucas Mello Schnorr"
 date: "January 2017"
 output:
+  html_document: default
   pdf_document:
     number_sections: yes
-  html_document: default
-geometry: margin=1.5in, top=0.5in, bottom=0.5in
 subtitle: A RStudio Demonstration and Statistical Analysis Draft
+geometry: margin=1.5in, top=0.5in, bottom=0.5in
 ---
 
 ```{r setup, include=FALSE}
@@ -121,9 +121,7 @@ Which are slightly different from the true values.
 
 The measurements detailed in the introduction have been obtained for a number of different message sizes. We provide five of them here, with the following names:
 
-```{bash}
-ls data/PP_size*.csv
-```
+
 
 From 1 to 5 bytes. You should repeat all the steps of previous section using at least one of these files. Write your stastitical interpretation of the measurements. Here's how you can read one of them.
 

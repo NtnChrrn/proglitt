@@ -2,7 +2,9 @@
 title: "The Grammar of Graphics (of ggplot2)"
 author: "Lucas Mello Schnorr, Jean-Marc Vincent"
 date: "February 14, 2017"
-output: pdf_document
+output:
+  html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -79,3 +81,7 @@ Using facets to separate data.
 ```{r}
 ggplot(mtcars, aes(x=hp, y=mpg)) + facet_wrap(~gear) + geom_point();
 ```
+
+
+
+

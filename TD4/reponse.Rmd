@@ -6,6 +6,9 @@ output:
   html_document: default
   pdf_document: default
 ---
+Commande github pour ajouter le fichier
+git add TD4/response.Rmd
+git commit -m "commit 1"
 
 ```{r}
 data<-read.csv("data/lynx.csv");

@@ -1,0 +1,21 @@
+---
+title: "plot"
+author: "Antoine Charron et Lucas Freyssinet"
+date: "February 14, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r}
+data<-read.csv("data/lynx.csv");
+library(ggplot2);
+```
+
+```{r}
+ggplot(data=data, aes(x=time, y=lynx))+geom_point()+geom_line();
+```
+
+Resultat et interpretation: 
+Ce graphique représnete la quantité de Lynx en fonction des années. 
+On remarque ainsi que la quantitité oscille beaucoup. 

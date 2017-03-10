@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "plot"
 author: "Antoine Charron"
@@ -34,3 +35,41 @@ What can we say about Your name here  (for each state, FR)?
 ```{r}
 df %>% group_by(preusuel, dpt) %>% filter(preusuel == "ANTOINE") %>% summarise(N=sum(nombre));
 ```
+=======
+---
+title: "plot"
+author: "Antoine Charron"
+date: "February 14, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+Commande github pour ajouter le fichier
+git add TD4/response.Rmd
+git commit -m "commit 1"
+
+```{r}
+library(readr);
+df <- read_tsv (file = "dpt2015.txt",locale = locale(encoding = "ISO-8859-1"))
+
+
+```
+
+
+
+```{r}
+library(dplyr)
+library(magrittr)
+
+```
+First name frequency evolves along time?
+```{r}
+df %>% group_by(preusuel, annais) %>% filter(preusuel == "ANTOINE", annais!="XXXX") %>% summarise(N=sum(nombre));
+```
+
+
+What can we say about Your name here  (for each state, FR)?
+```{r}
+df %>% group_by(preusuel, dpt) %>% filter(preusuel == "ANTOINE") %>% summarise(N=sum(nombre));
+```
+>>>>>>> 4a9b82ba11077a1c3f677bc33c765e042163136a

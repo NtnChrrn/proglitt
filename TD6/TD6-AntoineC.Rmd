@@ -1,0 +1,58 @@
+<<<<<<< HEAD
+---
+title: "plot"
+author: "Antoine Charron"
+date: "February 14, 2017"
+output:
+  html_document: default
+  pdf_document: default
+---
+Commande github pour ajouter le fichier
+git add TD4/response.Rmd
+git commit -m "commit 1"
+
+```{r}
+
+dice <- function (faces = 6, n = 100){
+  sample(x = seq(from=1, to = faces, by = 1), size=n, replace = TRUE)
+}
+
+dice(6,500)
+
+```
+
+
+
+
+
+```{r}
+  experiment <- function(faces = 6, n=100){
+    dice1 <- dice(faces,n);
+    dice2 <- dice(faces,n);
+    dice3 <- dice(faces,n);
+    data.frame(Dice1=dice1, Dice2 = dice2, Dice3 = dice3)
+  }
+
+
+```
+
+```{r}
+
+  library(dplyr);
+  library(ggplot2);
+experiment(6,1000) %>% 
+  mutate(Somme = Dice1 + Dice2 + Dice3) %>% 
+  ggplot(aes(x=as.factor(Somme))) + 
+          geom_bar(aes(y = (..count..)/sum(..count..)), width =.3) + 
+          xlab("Valeur de la somme ") + 
+          ylab("Frequence") + 
+          ylim(0,NA) + 
+          theme_bw()
+
+#calcul le nombre doccuences de chaque valeur possible de somme
+
+```
+
+
+
+

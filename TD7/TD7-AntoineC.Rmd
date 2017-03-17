@@ -49,13 +49,25 @@ experiment(6,1000) %>%
           ylim(0,NA) + 
           theme_bw()
 
-#calcul le nombre doccuences de chaque valeur possible de somme
+#calcul le nombre d'occurences de chaque valeur possible de somme
 
 ```
 
+
+PARTIE 2: TD7: Le problème du DUC de Toscane suite
 ```{r}
+library(dplyr);
+library(ggplot2);
 
 
+# intervalle de confiance à 95%
+experiment(6,1000) %>%
+  mutate(Somme = Dice1 + Dice2 + Dice3) %>%
+  group_by(Somme) %>%
+  summarize(N=n()) %>%
+  mutate(frequence = N/sum(N)) %>%
+  mutate(variance = frequence * (1-frequence)) %>%
+  mutate(erreur = qnorm(0.975) * sqrt(variance) / sqrt(sum(N))); 
 ```
 
 

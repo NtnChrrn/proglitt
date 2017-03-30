@@ -1,0 +1,66 @@
+---
+title: '[L3-MIAGE]Fressyinet-Charron-Evaluation de la répartition des budgets de l état en fonction des mandants presidentiels'
+author: "FREYSSINET-CHARRON"
+date: "30 mars 2017"
+output: html_document
+---
+Commande github pour ajouter le fichier
+git add TD4/response.Rmd
+git commit -m "commit 1"
+
+<h1>Mise en place</h1>
+```{r}
+library(dplyr)
+library(magrittr)
+library(ggplot2)
+
+d <- read.csv("data/projet.csv");
+```
+On récupère les données qui nous intéressent dans le document:
+```{r}
+d <- d[1:80,]
+```
+
+
+<h1>Les domaines principaux</h1>
+```{r}
+library(reshape2)
+data <- d %>% filter(grepl("[01][0123456789] -", X))
+data %>% melt(id.vars = "X") %>% mutate (variable = as.integer(gsub("X", "", variable))) %>% mutate(value = as.double(gsub(",", ".",value))) %>% group_by(X,variable) %>%
+   ggplot(aes(x=variable, y=value, color=X))+
+          geom_point() + 
+          geom_line() + 
+          theme_bw() + 
+          xlab("Années")+
+          ylab("Budget en milliard d'euros") ;
+
+```
+
+
+
+```{r}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

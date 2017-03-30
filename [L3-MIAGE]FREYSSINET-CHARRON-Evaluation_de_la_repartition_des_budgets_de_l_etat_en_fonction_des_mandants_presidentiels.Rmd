@@ -1,0 +1,15 @@
+---
+title: '[L3-MIAGE]Fressyinet-Charron-Evaluation de la répartition des budgets de l état en fonction des mandants presidentiels'
+author: "FREYSSINET-CHARRON"
+date: "30 mars 2017"
+output: html_document
+---
+Commande github pour ajouter le fichier
+git add TD4/response.Rmd
+git commit -m "commit 1"
+
+```{r}
+d <- read.csv("data/[L3-MIAGE]FREYSSINET-CHARRON-Evaluation_de_la_repartition_des_budgets_de_l_etat_en_fonction_des_mandants_presidentiels");
+
+
+```

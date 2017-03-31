@@ -1,18 +1,19 @@
 ---
-title: '[L3-MIAGE]Fressyinet-Charron-Evaluation de la répartition des budgets de l état en fonction des mandants presidentiels'
+title: '[L3-MIAGE]Freyssinet-Charron- Etude de l évolution de la répartition des budgets
+  des administrations publiques de l Etat'
 author: "FREYSSINET-CHARRON"
 date: "30 mars 2017"
-output: html_document
+output:
+  html_document: default
+  pdf_document: default
+  word_document: default
 ---
-Commande github pour ajouter le fichier
-git add TD4/response.Rmd
-git commit -m "commit 1"
-
 <h1>Mise en place</h1>
 ```{r}
 library(dplyr)
 library(magrittr)
 library(ggplot2)
+library(reshape2)
 
 d <- read.csv("data/projet.csv");
 ```
@@ -21,10 +22,15 @@ On récupère les données qui nous intéressent dans le document:
 d <- d[1:80,]
 ```
 
+<h1>Introduction</h1>
+Ce jeu de donnée est tiré du site de l'insee. Il concerne les "comptes de la Nation" et plus précisément, les dépenses des administrations publiques ventilées par fonction.
 
-<h1>Les domaines principaux</h1>
+Lorsqu'on regarde les données, on peut distinguer les structures internes des différents domaines. Par exemple, la défense est découpée en 5 catégories: la Défense militaire, la Défense civile, l'aide militaire à des pays étrangers, la recherche et développement concernant la Défense, le ministère de la Défense. 
+
+Les dépenses des administrations publiques sont ventilées suivant une nomenclature internationale, la COFOG (Classification of the Functions of Government). Cette nomenclature permet de répartir les dépenses des administrations publiques en dix catégories selon leur fonction et d'évaluer leur importance respective.
+
+<h1>Les catégories principales</h1>
 ```{r}
-library(reshape2)
 data <- d %>% filter(grepl("[01][0123456789] -", X))
 data %>% melt(id.vars = "X") %>% mutate (variable = as.integer(gsub("X", "", variable))) %>% mutate(value = as.double(gsub(",", ".",value))) %>% group_by(X,variable) %>%
    ggplot(aes(x=variable, y=value, color=X))+
@@ -32,35 +38,83 @@ data %>% melt(id.vars = "X") %>% mutate (variable = as.integer(gsub("X", "", var
           geom_line() + 
           theme_bw() + 
           xlab("Années")+
-          ylab("Budget en milliard d'euros") ;
+          ylab("Budget en milliard d'euros")+
+          ggtitle("Répartition du budget de la protection sociale");
 
 ```
 
+Après toutes ces manipulations de données, on obtient une représentation graphique de l'évolution des répartitions du budget au sein des différentes administrations de l'année 1995 jusqu'à l'année 2015.
+On remarque facilement, que certains budgets ont fortement augmentés, que certains ont stagnés, mais qu'aucun n'a connu de net baisse. 
 
 
 ```{r}
+data <- d %>% filter(grepl("[01][0123456789] -", X))
+
+```
+Lors de l'import du fichier via la fonction read.csv(), un espace est venu s'intercaller entre le chiffre des milliers et le chiffre des centaines, ce qui a rendu illisible une partie de nos données. 
+Nous avons essayé d'enlever l'espace pour les milliers grâce à la fonction grepl (comme pour les 'X' ou les ',') mais nous n'obtenons pas le résultat espéré. Le total des budgets n'est donc disponible que jusqu'en 2008. 
+Pour ce fait, nous n'étudierons pas l'évolution du budget total.
+
+                          c <- d %>% filter(grepl("Total", X))%>% gsub(" ", "")
+
+```{r}
+c <- d %>% filter(grepl("Total", X))
+data <- rbind(data, c);
+
+data %>% melt(id.vars = "X") %>% mutate (variable = as.integer(gsub("X", "", variable))) %>% mutate(value = as.double(gsub(",", ".",value))) %>% group_by(X,variable) %>%
+   ggplot(aes(x=variable, y=value, color=X)) +
+          geom_point() + 
+          geom_line() + 
+          theme_bw() + 
+          xlab("Annees") +
+          ylab("Budget en milliard d'euros")+
+          ggtitle("Repartitions du budget au sein des différentes administrations");
 
 ```
 
 
 
+On peut observer ci dessus, le budget des dépenses publique de l'Etat en milliard d'euros. On remarque que le budget est en croissance, d'après les chiffres dont nous disposons, le budget serait passé de 663,7 milliard d'euros en 1995 à 1226,7 milliard d'euros fin 2014.
+
+Nous avons effectué sur un tableur un rapport entre ces deux années. Le budget global a ainsi augmenté entre 1995 et 2015 de 84,8%. 
+Nous avons essayé de nous interresser à des événements marquant de ces 20 dernières années afin de voir si ils pouvaient avoir un impact. Parmi eux, le changement de monnaie (franc-euro), les différents mandats présidentiels, la crise des subprimes, ou encore les attentats du 11 septembre 2001 auraient pu être des causes pouvant apporter des impacts majeurs sur le graphe.
+
+
+Pour ce fait, nous avons choisis d'étudier un domaine particulier: le budget de la prestation sociale
 
 
 
+<h1> Etude approfondie d'un domaine particulier</h1>
+
+<h2> Le budget de la protection sociale </h2>
+
+```{r}
+ps <- d %>% filter(grepl("10", X))
+
+ps %>% melt(id.vars = "X") %>% mutate (variable = as.integer(gsub("X", "", variable))) %>% mutate(value = as.double(gsub(",", ".",value))) %>% group_by(X,variable) %>%
+   ggplot(aes(x=variable, y=value, color=X)) +
+          geom_point() + 
+          geom_line() + 
+          theme_bw() + 
+          xlab("Années") +
+          ylab("Budget en milliard d'euros") +
+          ggtitle("Répartition du budget de la protection sociale");
+
+```
+
+Contrairement à notre premier point de vue, on aurait pu penser que la hausse des dépenses de la protection sociales pouvait venir d'une augmentation des prestations de chômage ou des minimas sociaux. (Comme nous avons pu le lire sur certains média). 
 
 
+"L'augmentation des dépenses sociales [...] serait due presque exclusivement à la hausse des prestations de chômage (+10,8% sur 2008) - dont la cause est conjoncturelle, ainsi qu'à celle des minima sociaux (+22,7% sur 2008)" Source http://www.ifrap.org
 
 
+Nous remarquons ainsi, grâce à notre graphique portant sur l'évolution des budgets de la prestation sociale, que le budget le plus important dans le budget total de la protection sociale est le budget de la vieillesse. A lui seul, il représente 55,1% du budget total. De ce fait, nous pouvons faire un rapprochement entre l'âge de départ à la retraite à 61 ans (sourve CNAV) dans les années 2000 et le baby-boom de l'après Guerre. 
 
 
+<h1> Conclusion </h1>
 
-
-
-
-
-
-
-
-
+Pour conclure, nous sommes déçu de ne pas avoir pu explorer totalement en profondeur les impacts de ces grands événements sur la politique budgétaire de l'état et des citoyens. Nous supposons donc que ces données n'étaient pas adaptés à ce type d'observation essentiellement car les données ne varient qu'une fois par ans et que les catégorisations des budgets pouvaient lisser encore d'avantages les évolutions des budgets. 
+Pour observer ces impacts là sur la société, il aurait peut-être été plus judicieux d'observer les taux d'occupations de ces « événements » dans les médias.
+Toutefois, nous ne doutons pas que la prise de conscience sur les grands enjeux et les grandes crises du XXIème siècle comme la crise environnementale ou encore la crise migratoire et les tensions qui l'accompagnent finiront pas profondément modifié les structures du budget étatique à long terme.
 
 
